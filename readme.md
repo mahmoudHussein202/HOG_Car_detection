@@ -13,9 +13,10 @@ steps :
 		
 3- after training, the program will ask you to enter the path of an image or video :
 
-= processing video : - output will take about 10 minuites to be produced
+- processing video :                 - output will take about 10 minuites to be produced
 			     	     - output will be saved in results/output_videos
-= processing an image : - output will be shown directly
+			     	    
+- processing an image :              - output will be shown directly
 
 
 
