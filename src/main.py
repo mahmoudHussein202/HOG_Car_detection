@@ -249,9 +249,11 @@ for test_image in test_images:
     rectangles, result_image = funct.draw_labeled_bboxes(test_image, labels)
     result_boxes.append(rectangles)
     result_images.append(result_image)
-    #funct.visualize_bboxes(test_images[0],svc ,X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
-    #plt.waitforbuttonpress(-1)
-
+    if debug_mode == 1 :
+        funct.visualize_bboxes(test_images[0],svc ,X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
+        plt.waitforbuttonpress(-1)
+        funct.visualize_images(heatmap_images, 2, "Heatmap", cmap="hot")
+        plt.waitforbuttonpress(-1)
 src = input("Enter the path of the video or image :")
 src= str(src)
 #------------------------Video Write---------------------------
