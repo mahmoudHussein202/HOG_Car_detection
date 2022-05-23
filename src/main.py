@@ -1,4 +1,5 @@
 from distutils.log import debug
+from typing import Any
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -36,7 +37,15 @@ def find_vehicles(image):
 #------------------------main-----------------------------    
 
 
-debug = 0
+debug_mode = int(input("Enter (0) or (1)  '(0) for normal mode , (1) for debug mode' :   "))
+
+while (1):
+    if debug_mode == 0 or 1 :
+        break
+    else :
+        debug_mode = int(input("wrong input , please enter 0 or 1 "))
+
+
 mode=0
 vehicles_dir =     'data\\vehicles'
 non_vehicles_dir = 'data\\non-vehicles'
@@ -55,26 +64,50 @@ for image in images:
         notcars.append(image)
 data_info = funct.data_look(cars, notcars)
 
-#---------------------------------------------------------------
-
-
+#-------------------------- visualise some samples -------------------------------------
 num_images = 10
-
 # Just for fun choose random car / not-car indices and plot example images   
 cars_samples = random.sample(list(cars), num_images)
-notcar_samples = random.sample(list(notcars), num_images)
-    
+notcar_samples = random.sample(list(notcars), num_images) 
 # Read in car / not-car images
 car_images = []
 notcar_images = []
 for sample in cars_samples:
     car_images.append(mpimg.imread(sample))
-    
 for sample in notcar_samples:
     notcar_images.append(mpimg.imread(sample))
 
-
+if debug_mode == 1 : 
+    funct.visualize_images(car_images, num_images, "Example Car images")
+    plt.waitforbuttonpress(2)
+    funct.visualize_images(notcar_images, num_images, "Example not-car images")
+    plt.waitforbuttonpress(2)
 #----------------------------------------------------------
+
+
+#------------------------plot joint space -----------------------
+if debug_mode == 1 :
+    funct.plot3d(funct.convert_color(car_images[1], 'RGB2YUV'), car_images[1], axis_labels=list("YUV"), axis_limits=((0, 1), (0, 1), (0, 1)))
+    plt.waitforbuttonpress(2)
+    funct.plot3d(funct.convert_color(notcar_images[1], 'RGB2YUV'), notcar_images[1], axis_labels=list("YUV"), axis_limits=((0, 1), (0, 1), (0, 1)))
+    plt.waitforbuttonpress(2)
+    # # Plot the examples
+    fig = plt.figure()
+    plt.subplot(141)
+    yuv_image = funct.convert_color(car_images[1], 'RGB2YUV')
+    plt.imshow(yuv_image[:,:,0], cmap ="gray")
+    plt.title('Y channel')
+    plt.subplot(142)
+    plt.imshow(yuv_image[:,:,1], cmap ="gray")
+    plt.title('U Channel')
+    plt.subplot(143)
+    plt.imshow(yuv_image[:,:,2], cmap ="gray")
+    plt.title('V Channel')
+    plt.subplot(144)
+    plt.imshow(yuv_image)
+    plt.title('YUV')
+    plt.waitforbuttonpress(-1)
+
 
 orient = 9
 pix_per_cell = 8
@@ -216,10 +249,10 @@ for test_image in test_images:
     rectangles, result_image = funct.draw_labeled_bboxes(test_image, labels)
     result_boxes.append(rectangles)
     result_images.append(result_image)
+    #funct.visualize_bboxes(test_images[0],svc ,X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
+    #plt.waitforbuttonpress(-1)
 
-
-
-src = input("Enter path of the video or image :")
+src = input("Enter the path of the video or image :")
 src= str(src)
 #------------------------Video Write---------------------------
 
@@ -240,7 +273,7 @@ else:
     heatmap_images = []
     result_img_all_boxes = []
     test_image = cv2.imread(src)
-    rectangles = funct.get_rectangles(test_images,svc , X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins) 
+    rectangles = funct.get_rectangles(test_image,svc , X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins)
     result_img_all_boxes.append(funct.draw_boxes(test_image, rectangles, color='random', thick=3))
     heatmap_image = np.zeros_like(test_image[:, :, 0])
     heatmap_image = funct.add_heat(heatmap_image, rectangles)
@@ -250,6 +283,7 @@ else:
     rectangles, result_image = funct.draw_labeled_bboxes(test_image, labels)
     result_boxes.append(rectangles)
     result_images.append(result_image)
-    funct.visualize_images(result_img_all_boxes, 2, "test")
+    cv2.imshow("Final Result",result_image)
+    cv2.waitKey(-1)
 
 
