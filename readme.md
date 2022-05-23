@@ -1,6 +1,10 @@
 before running the project: 
 ---------------------------
-add data for training in data folder "i.e vechiles and non_vehicles folders inside the data folder" 
+
+1- download training data from :
+ https://drive.google.com/file/d/1gIyMqxqxClA7os5CgK3VqzigP58TBqjH/view
+ 
+2-add data for training in data folder "i.e vechiles and non_vehicles folders inside the data folder" 
 
 
 steps :
