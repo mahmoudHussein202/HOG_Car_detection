@@ -85,7 +85,7 @@ if debug_mode == 1 :
 #----------------------------------------------------------
 
 
-#------------------------plot joint space -----------------------
+#------------------------plot color space -----------------------
 if debug_mode == 1 :
     funct.plot3d(funct.convert_color(car_images[1], 'RGB2YUV'), car_images[1], axis_labels=list("YUV"), axis_limits=((0, 1), (0, 1), (0, 1)))
     plt.waitforbuttonpress(2)
